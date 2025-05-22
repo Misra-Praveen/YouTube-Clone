@@ -10,6 +10,7 @@ import PlaylistPlayIcon from '@mui/icons-material/PlaylistPlay';
 import WatchLaterIcon from '@mui/icons-material/WatchLater';
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import DownloadIcon from '@mui/icons-material/Download';
+import { Link } from 'react-router-dom';
 
 
 const Sidebar = ({isOpen}) => {
@@ -20,10 +21,10 @@ const Sidebar = ({isOpen}) => {
     <aside className={`bg-white p-4 w-65 ${isOpen ? "block" : "hidden"}  fixed md:static h-full z-40`}>
         {/* Primary Navigation */}
       <div className='space-y-1 mb-4'>
-        <div className={menuItemStyle}>
+        <Link to={"/"} className={menuItemStyle}>
           <HomeIcon />
           <span>Home</span>
-        </div>
+        </Link>
         <div className={menuItemStyle}>
           <VideoLibraryRoundedIcon />
           <span>Shorts</span>
@@ -54,10 +55,10 @@ const Sidebar = ({isOpen}) => {
           <PlaylistPlayIcon />
           <span>Playlists</span>
         </div>
-        <div className={menuItemStyle}>
+        <Link to="/channel/me" className={menuItemStyle}>
           <SmartDisplayIcon />
           <span>Your videos</span>
-        </div>
+        </Link>
         <div className={menuItemStyle}>
           <WatchLaterIcon />
           <span>Watch later</span>
