@@ -10,8 +10,8 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LogoutIcon from "@mui/icons-material/Logout";
 import VideoCallSharpIcon from "@mui/icons-material/VideoCallSharp";
 
-const Header = ({ toggleSidebar }) => {
-  const [searchTerm, setSearchTerm] = useState("");
+const Header = ({ toggleSidebar, setSearchTerm }) => {
+  const [input, setInput] = useState("");
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef();
 
@@ -23,20 +23,19 @@ const Header = ({ toggleSidebar }) => {
   const username = userInfo?.user?.username;
   const avatar = userInfo?.user?.avatar;
 
-  // Logout
+  // Handle logout
   const handleLogout = () => {
     dispatch(logout());
     navigate("/login");
   };
 
-  // Handle search
+  // Submit local search
   const handleSearch = (e) => {
     e.preventDefault();
-    if (!searchTerm.trim()) return;
-    navigate(`/?search=${encodeURIComponent(searchTerm.trim())}`);
+    setSearchTerm(input.trim());
   };
 
-  // Close dropdown on outside click
+  // Close dropdown if clicked outside
   useEffect(() => {
     function handleClickOutside(event) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -49,7 +48,7 @@ const Header = ({ toggleSidebar }) => {
 
   return (
     <header className="w-full fixed top-0 bg-white shadow-md z-50 px-4 py-2 flex items-center justify-between flex-wrap">
-      {/* Left: Menu & Logo */}
+      {/* Left: Logo & Sidebar */}
       <div className="flex items-center gap-0.5 md:gap-4">
         <button
           className="hidden sm:block p-2 rounded-full hover:bg-gray-100"
@@ -64,23 +63,27 @@ const Header = ({ toggleSidebar }) => {
         </div>
       </div>
 
-      {/* Center: Search Bar */}
-      <form onSubmit={handleSearch} className="w-1/2">
+      {/* Center: Search */}
+      <form onSubmit={handleSearch} className="w-1/2 mt-2 sm:mt-0">
         <div className="flex border border-gray-300 rounded-full overflow-hidden bg-white">
           <input
             type="text"
-            onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Search"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
             className="w-[80%] px-4 py-1 border rounded-l-full focus:outline-none"
           />
-          <button className="w-[20%] flex items-center justify-center bg-gray-50 hover:bg-gray-100">
+          <button
+            type="submit"
+            className="w-[20%] flex items-center justify-center bg-gray-50 hover:bg-gray-100"
+          >
             <SearchSharpIcon />
           </button>
         </div>
       </form>
 
-      {/* Right: User/Sign In */}
-      <div className="flex items-center gap-2">
+      {/* Right: User / Auth */}
+      <div className="flex items-center gap-2 mt-2 sm:mt-0">
         {token ? (
           <div className="flex items-center gap-2">
             <button
