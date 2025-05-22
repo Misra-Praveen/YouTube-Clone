@@ -4,12 +4,14 @@ import "./index.css";
 import App from "./App.jsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { lazy, Suspense } from "react";
-import store  from "./redux/store";
+import store from "./redux/store";
 import { Provider } from "react-redux";
 
 const Login = lazy(() => import("./pages/Login.jsx"));
 const Register = lazy(() => import("./pages/Register.jsx"));
 const Home = lazy(() => import("./pages/Home.jsx"));
+const VideoPage = lazy(() => import("./pages/VideoPage.jsx"));
+const ChannelPage = lazy(() => import("./pages/ChannelPage.jsx"));
 
 
 const appRouter = createBrowserRouter([
@@ -41,7 +43,22 @@ const appRouter = createBrowserRouter([
           </Suspense>
         ),
       },
-      
+      {
+        path: "/video/:id",
+        element: (
+          <Suspense fallback="Loading...">
+            <VideoPage />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/channel/me",
+        element: (
+          <Suspense fallback="Loading...">
+            <ChannelPage />
+          </Suspense>
+        ),
+      },
     ],
   },
 ]);
@@ -49,9 +66,7 @@ const appRouter = createBrowserRouter([
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <Provider store={store}>
-     
       <RouterProvider router={appRouter} />
-      
     </Provider>
   </StrictMode>
 );
