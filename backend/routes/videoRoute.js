@@ -8,4 +8,8 @@ router.post("/", protect, uploadVideo);
 router.get("/", getAllVideos);
 router.get("/:id", getVideoById);
 
+router.put("/:id/like", protect, likeVideo);
+router.put("/:id/dislike", protect, dislikeVideo);
+
+
 export default router;
