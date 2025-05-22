@@ -42,7 +42,10 @@ export const getChannelById = async (req, res) => {
 
 export const getUserChannels = async (req, res) => {
   try {
-    const channels = await Channel.find({ owner: req.user._id });
+    const channels = await Channel.find({ owner: req.user._id })
+      .populate("videos")
+      .sort({ createdAt: -1 });
+
     res.status(200).json(channels);
   } catch (err) {
     res.status(500).json({ message: "Failed to fetch user's channels", error: err.message });
