@@ -12,7 +12,7 @@ const Register = lazy(() => import("./pages/Register.jsx"));
 const Home = lazy(() => import("./pages/Home.jsx"));
 const VideoPage = lazy(() => import("./pages/VideoPage.jsx"));
 const ChannelPage = lazy(() => import("./pages/ChannelPage.jsx"));
-
+const UploadVideo = lazy(() => import("./pages/UploadVideo.jsx"));
 
 const appRouter = createBrowserRouter([
   {
@@ -56,6 +56,14 @@ const appRouter = createBrowserRouter([
         element: (
           <Suspense fallback="Loading...">
             <ChannelPage />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/upload",
+        element: (
+          <Suspense fallback="Loading...">
+            <UploadVideo />
           </Suspense>
         ),
       },
