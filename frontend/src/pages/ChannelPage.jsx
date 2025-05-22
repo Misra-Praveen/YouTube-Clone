@@ -11,11 +11,14 @@ const ChannelPage = () => {
 
   const fetchMyChannel = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/channels/my-channels", {
-        headers: {
-          Authorization: `Bearer ${userInfo.token}`,
-        },
-      });
+      const res = await axios.get(
+        "http://localhost:5000/api/channels/my-channels",
+        {
+          headers: {
+            Authorization: `Bearer ${userInfo.token}`,
+          },
+        }
+      );
       setChannel(res.data[0]); // assuming user has 1 channel
     } catch (err) {
       console.error("Failed to fetch channel", err);
@@ -44,6 +47,7 @@ const ChannelPage = () => {
       navigate("/login");
     }
   }, [userInfo]);
+  console.log(channel);
 
   if (loading) return <p className="text-center mt-10">Loading channel...</p>;
   if (!channel) return <p className="text-center mt-10">No channel found.</p>;
@@ -63,7 +67,7 @@ const ChannelPage = () => {
       <h2 className="text-xl font-semibold mb-4">Your Videos</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {channel.videos.map((video) => (
-          <div key={video._id} className="bg-white shadow rounded p-2">
+          <div key={video._id} className="bg-white w-[320px] shadow rounded p-2">
             <img
               src={video.thumbnailUrl}
               alt={video.title}
