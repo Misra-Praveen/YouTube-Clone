@@ -84,20 +84,20 @@ const ChannelPage = () => {
             value={channelName}
             onChange={(e) => setChannelName(e.target.value)}
             required
-            className="w-full p-2 border rounded mb-3"
+            className="w-full shadow shadow-gray-600 px-3 py-2 rounded focus: outline-none focus:ring-2 focus:ring-blue-200 mb-3"
           />
           <textarea
             placeholder="Description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            className="w-full p-2 border rounded mb-3"
+            className="w-full shadow shadow-gray-600 px-3 py-2 rounded focus: outline-none focus:ring-2 focus:ring-blue-200 mb-3"
           />
           <input
             type="text"
             placeholder="Channel Banner URL (optional)"
             value={channelBanner}
             onChange={(e) => setChannelBanner(e.target.value)}
-            className="w-full p-2 border rounded mb-3"
+            className="w-full shadow shadow-gray-600 px-3 py-2 rounded focus: outline-none focus:ring-2 focus:ring-blue-200 mb-3"
           />
           <button
             type="submit"

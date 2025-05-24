@@ -22,6 +22,12 @@ function Register() {
     return;
   }
 
+  if(!form.email.includes("@") || !form.email.endsWith(".com")){
+    alert("Please enter valid email");
+    return;
+
+  }
+
   try {
     const res = await axios.post("http://localhost:5000/api/auth/register", {
       username: form.username,

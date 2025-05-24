@@ -42,8 +42,13 @@ const UploadVideo = () => {
   };
 
   useEffect(() => {
-    fetchMyChannels();
-  }, []);
+    //fetchMyChannels();
+    if (userInfo?.token) {
+      fetchMyChannels();
+    } else {
+      navigate("/login");
+    }
+  }, [userInfo]);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -109,7 +114,7 @@ const UploadVideo = () => {
           placeholder="Thumbnail URL (image)"
           value={form.thumbnailUrl}
           onChange={handleChange}
-          className="input w-full"
+          className="w-full shadow shadow-gray-600 px-3 py-2 rounded focus: outline-none focus:ring-2 focus:ring-blue-200"
           required
         />
 
