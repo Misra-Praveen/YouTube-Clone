@@ -57,6 +57,31 @@ export const getVideoById = async (req, res) => {
 };
 
 
+export const deleteVideo = async (req, res) => {
+  try {
+    const video = await Video.findById(req.params.id);
+    if (!video) {
+      return res.status(404).json({ message: "Video not found" });
+    }
+
+    // Only uploader can delete the video
+    if (video.uploader.toString() !== req.user._id.toString()) {
+      return res.status(403).json({ message: "Not authorized to delete this video" });
+    }
+
+    // Remove video reference from channel
+    await Channel.findByIdAndUpdate(video.channelId, {
+      $pull: { videos: video._id },
+    });
+
+    await video.deleteOne();
+    res.status(200).json({ message: "Video deleted successfully" });
+  } catch (err) {
+    res.status(500).json({ message: "Failed to delete video", error: err.message });
+  }
+};
+
+
 export const likeVideo = async (req, res) => {
   try {
     const video = await Video.findById(req.params.id);
