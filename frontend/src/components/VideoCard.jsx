@@ -2,8 +2,8 @@ import { Link } from "react-router-dom";
 
 const VideoCard = ({ video }) => {
   return (
-    <Link to={`/video/${video._id}`} className="w-full p-2 sm:w-[250px]">
-      <div className="mb-6 w-[320px]">
+    <Link to={`/video/${video._id}`} className="block w-full">
+      <div className="mb-6">
         <img
           src={video.thumbnailUrl}
           alt={video.title}

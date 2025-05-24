@@ -19,9 +19,19 @@ const UploadVideo = () => {
 
   const fetchMyChannels = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/channels/my-channels", {
-        headers: { Authorization: `Bearer ${userInfo.token}` },
-      });
+      const res = await axios.get(
+        "http://localhost:5000/api/channels/my-channels",
+        {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        }
+      );
+      if (res.data.length === 0) {
+        // ✅ Redirect if no channels
+        alert("You need to create a channel before uploading a video.");
+        navigate("/channel/me");
+        return; 
+      }
+
       setChannels(res.data);
       if (res.data.length > 0) {
         setForm((prev) => ({ ...prev, channelId: res.data[0]._id }));
@@ -73,7 +83,7 @@ const UploadVideo = () => {
           placeholder="Video Title"
           value={form.title}
           onChange={handleChange}
-          className="input w-full"
+          className="w-full shadow shadow-gray-600 px-3 py-2 rounded focus: outline-none focus:ring-2 focus:ring-blue-200"
           required
         />
         <textarea
@@ -81,7 +91,7 @@ const UploadVideo = () => {
           placeholder="Description"
           value={form.description}
           onChange={handleChange}
-          className="input w-full h-24"
+          className="w-full shadow shadow-gray-600 px-3 py-2 rounded focus: outline-none focus:ring-2 focus:ring-blue-200 h-24"
           required
         />
         <input
@@ -90,7 +100,7 @@ const UploadVideo = () => {
           placeholder="Category (optional)"
           value={form.category}
           onChange={handleChange}
-          className="input w-full"
+          className="w-full shadow shadow-gray-600 px-3 py-2 rounded focus: outline-none focus:ring-2 focus:ring-blue-200"
         />
 
         <input
@@ -109,7 +119,7 @@ const UploadVideo = () => {
           placeholder="Video URL (.mp4 or YouTube embed)"
           value={form.videoUrl}
           onChange={handleChange}
-          className="input w-full"
+          className="w-full shadow shadow-gray-600 px-3 py-2 rounded focus: outline-none focus:ring-2 focus:ring-blue-200"
           required
         />
 
@@ -117,7 +127,7 @@ const UploadVideo = () => {
           name="channelId"
           value={form.channelId}
           onChange={handleChange}
-          className="input w-full"
+          className="w-full shadow shadow-gray-600 px-3 py-2 rounded focus: outline-none focus:ring-2 focus:ring-blue-200"
         >
           {channels.map((ch) => (
             <option key={ch._id} value={ch._id}>

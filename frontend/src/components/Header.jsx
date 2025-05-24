@@ -64,18 +64,18 @@ const Header = ({ toggleSidebar, setSearchTerm }) => {
       </div>
 
       {/* Center: Search */}
-      <form onSubmit={handleSearch} className="w-1/2 mt-2 sm:mt-0">
+      <form onSubmit={handleSearch} className="w-1/2 sm:mt-0">
         <div className="flex border border-gray-300 rounded-full overflow-hidden bg-white">
           <input
             type="text"
             placeholder="Search"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            className="w-[80%] px-4 py-1 border rounded-l-full focus:outline-none"
+            className="w-[80%] md:w-[85%] lg:w-[88%] px-4 py-1 border border-gray-200 rounded-l-full focus:outline-none"
           />
           <button
             type="submit"
-            className="w-[20%] flex items-center justify-center bg-gray-50 hover:bg-gray-100"
+            className="w-[20%] md:w-[15%] lg:w-[12%] flex items-center justify-center bg-gray-50 hover:bg-gray-100"
           >
             <SearchSharpIcon />
           </button>
@@ -83,11 +83,11 @@ const Header = ({ toggleSidebar, setSearchTerm }) => {
       </form>
 
       {/* Right: User / Auth */}
-      <div className="flex items-center gap-2 mt-2 sm:mt-0">
+      <div className="flex items-center gap-2 sm:mt-0">
         {token ? (
           <div className="flex items-center gap-2">
             <button
-              className="p-2 rounded-full hover:bg-gray-100"
+              className="hidden md:block p-2 rounded-full hover:bg-gray-100"
               onClick={() => navigate("/upload")}
             >
               <VideoCallSharpIcon fontSize="large" />
@@ -129,7 +129,7 @@ const Header = ({ toggleSidebar, setSearchTerm }) => {
         ) : (
           <Link
             to="/login"
-            className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-full hover:bg-gray-100"
+            className="flex items-center gap-2 px-2.5 py-[5px] border border-gray-300 rounded-full hover:bg-gray-100"
           >
             <AccountCircleIcon />
             <span>Sign in</span>

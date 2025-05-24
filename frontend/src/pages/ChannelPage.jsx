@@ -7,6 +7,9 @@ const ChannelPage = () => {
   const { userInfo } = useSelector((state) => state.auth);
   const [channel, setChannel] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [channelName, setChannelName] = useState("");
+  const [description, setDescription] = useState("");
+  const [channelBanner, setChannelBanner] = useState("");
   const navigate = useNavigate();
 
   const fetchMyChannel = async () => {
@@ -19,7 +22,7 @@ const ChannelPage = () => {
           },
         }
       );
-      setChannel(res.data[0]); // assuming user has 1 channel
+      setChannel(res.data[0]);
     } catch (err) {
       console.error("Failed to fetch channel", err);
     } finally {
@@ -40,6 +43,26 @@ const ChannelPage = () => {
     }
   };
 
+  const handleCreateChannel = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post(
+        "http://localhost:5000/api/channels",
+        { channelName, description, channelBanner },
+        {
+          headers: {
+            Authorization: `Bearer ${userInfo.token}`,
+          },
+        }
+      );
+      setChannel(res.data.channel);
+      navigate("/upload");
+    } catch (err) {
+      alert("Failed to create channel");
+      console.error(err.response?.data || err.message);
+    }
+  };
+
   useEffect(() => {
     if (userInfo?.token) {
       fetchMyChannel();
@@ -47,10 +70,45 @@ const ChannelPage = () => {
       navigate("/login");
     }
   }, [userInfo]);
-  console.log(channel);
 
   if (loading) return <p className="text-center mt-10">Loading channel...</p>;
-  if (!channel) return <p className="text-center mt-10">No channel found.</p>;
+
+  if (!channel) {
+    return (
+      <div className="max-w-xl mx-auto mt-10 p-4 bg-white rounded shadow">
+        <h2 className="text-xl font-bold mb-4">Create Your Channel</h2>
+        <form onSubmit={handleCreateChannel}>
+          <input
+            type="text"
+            placeholder="Channel Name"
+            value={channelName}
+            onChange={(e) => setChannelName(e.target.value)}
+            required
+            className="w-full p-2 border rounded mb-3"
+          />
+          <textarea
+            placeholder="Description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            className="w-full p-2 border rounded mb-3"
+          />
+          <input
+            type="text"
+            placeholder="Channel Banner URL (optional)"
+            value={channelBanner}
+            onChange={(e) => setChannelBanner(e.target.value)}
+            className="w-full p-2 border rounded mb-3"
+          />
+          <button
+            type="submit"
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+          >
+            Create Channel
+          </button>
+        </form>
+      </div>
+    );
+  }
 
   return (
     <div className="p-4">

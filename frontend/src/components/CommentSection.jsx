@@ -1,96 +1,202 @@
-import { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 
 const CommentSection = ({ videoId }) => {
   const { userInfo } = useSelector((state) => state.auth);
+  // console.log("userInfo is ", userInfo);
+  // console.log("User ID:", userInfo?.user?.id);
   const [comments, setComments] = useState([]);
-  const [text, setText] = useState("");
+  const [newComment, setNewComment] = useState("");
+
+  const [editingId, setEditingId] = useState(null);
+  const [editText, setEditText] = useState("");
 
   const fetchComments = async () => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/comments/${videoId}`);
-      setComments(res.data);
-    } catch (err) {
-      console.error("Failed to fetch comments");
+      const response = await axios.get(
+        `http://localhost:5000/api/comments/${videoId}`
+      );
+      setComments(response.data);
+    } catch (error) {
+      console.error("Failed to fetch comments:", error);
     }
   };
 
   useEffect(() => {
-    fetchComments();
+    if (videoId) fetchComments();
   }, [videoId]);
 
-  const handleComment = async () => {
+  const handlePostComment = async () => {
+    if (!newComment.trim()) return;
     try {
-      await axios.post(
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo?.token}`,
+        },
+      };
+      const response = await axios.post(
         `http://localhost:5000/api/comments`,
-        { videoId, text },
         {
-          headers: {
-            Authorization: `Bearer ${userInfo.token}`,
-          },
-        }
+          videoId,
+          text: newComment,
+        },
+        config
       );
-      setText("");
-      fetchComments(); // refresh
-    } catch (err) {
+      // console.log('response', response)
+      // setComments((prev) => [response.data.comment, ...prev]);
+      if (response.data?.comment) {
+    setComments((prev) => [response.data.comment, ...prev]);
+  } else {
+    console.warn("⚠️ Comment response missing, try refreshing.");
+  }
+      setNewComment("");
+    } catch (error) {
+      console.error("Post comment failed:", error);
       alert("Failed to post comment");
     }
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (commentId) => {
     try {
-      await axios.delete(`http://localhost:5000/api/comments/${id}`, {
+      const config = {
         headers: {
-          Authorization: `Bearer ${userInfo.token}`,
+          Authorization: `Bearer ${userInfo?.token}`,
         },
-      });
-      fetchComments(); // refresh
-    } catch (err) {
+      };
+      await axios.delete(
+        `http://localhost:5000/api/comments/${commentId}`,
+        config
+      );
+      setComments((prev) => prev.filter((c) => c._id !== commentId));
+    } catch (error) {
       alert("Failed to delete comment");
     }
   };
 
-  return (
-    <div className="mt-6">
-      <h3 className="font-bold mb-2">Comments</h3>
+  const handleEdit = (comment) => {
+    setEditingId(comment._id);
+    setEditText(comment.text);
+  };
 
-      {userInfo && (
-        <div className="flex items-center gap-2 mb-4">
-          <input
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            placeholder="Add a comment..."
-            className="flex-1 border rounded px-3 py-1"
+  const handleEditSubmit = async (commentId) => {
+    if (!editText.trim()) return;
+    try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo?.token}`,
+        },
+      };
+      const response = await axios.put(
+        `http://localhost:5000/api/comments/${commentId}`,
+        { text: editText },
+        config
+      );
+
+      setComments((prev) =>
+        prev.map((c) =>
+          c._id === commentId ? response.data.comment : c
+        )
+      );
+      setEditingId(null);
+      setEditText("");
+    } catch (error) {
+      alert("Failed to update comment");
+    }
+  };
+
+  return (
+    <div className="mt-4">
+      <h3 className="text-lg font-semibold mb-2">Comments</h3>
+
+      {userInfo ? (
+        <div className="flex items-start space-x-2 mb-4">
+          <img
+            src={
+              userInfo.user.avatar || "https://www.gravatar.com/avatar/?d=mp"
+            }
+            alt="avatar"
+            className="w-10 h-10 rounded-full"
           />
-          <button
-            onClick={handleComment}
-            className="bg-blue-600 text-white px-3 py-1 rounded"
-          >
-            Post
-          </button>
+          <div className="flex-1">
+            <textarea
+              className="w-full border rounded p-2"
+              rows={2}
+              value={newComment}
+              onChange={(e) => setNewComment(e.target.value)}
+              placeholder="Add a comment..."
+            />
+            <button
+              onClick={handlePostComment}
+              className="bg-blue-500 text-white px-4 py-1 rounded mt-1"
+            >
+              Post
+            </button>
+          </div>
         </div>
+      ) : (
+        <p className="text-sm text-gray-500">Please log in to comment.</p>
       )}
 
-      {comments.map((comment) => (
-        <div
-          key={comment._id}
-          className="border-b py-2 flex justify-between items-start"
-        >
-          <div>
-            <p className="text-sm font-semibold text-blue-700">{comment.userId.username}</p>
-            <p className="text-sm">{comment.text}</p>
-          </div>
-          {userInfo?.user?._id === comment.userId._id && (
-            <button
-              onClick={() => handleDelete(comment._id)}
-              className="text-red-500 text-sm"
-            >
-              Delete
-            </button>
-          )}
-        </div>
-      ))}
+      <div className="space-y-4">
+        {comments.map((comment) => {
+          const isOwner =
+            userInfo?.user?.id === (comment.userId?._id || comment.userId);
+
+          return (
+            <div key={comment._id} className="flex items-start space-x-2">
+              <img
+                src={
+                  comment.userId?.avatar ||
+                  "https://www.gravatar.com/avatar/?d=mp"
+                }
+                alt="avatar"
+                className="w-8 h-8 rounded-full"
+              />
+              <div className="flex-1">
+                <div className="flex justify-between items-center">
+                  <span className="font-semibold text-sm">
+                    {comment.userId?.username || "Anonymous"}
+                  </span>
+                  {isOwner && (
+                    <div className="space-x-2 text-xs text-blue-600">
+                      {editingId === comment._id ? (
+                        <>
+                          <button onClick={() => handleEditSubmit(comment._id)}>
+                            Save
+                          </button>
+                          <button onClick={() => setEditingId(null)}>
+                            Cancel
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          <button onClick={() => handleEdit(comment)}>
+                            Edit
+                          </button>
+                          <button onClick={() => handleDelete(comment._id)}>
+                            Delete
+                          </button>
+                        </>
+                      )}
+                    </div>
+                  )}
+                </div>
+
+                {editingId === comment._id ? (
+                  <textarea
+                    className="w-full border mt-1 rounded p-1"
+                    value={editText}
+                    onChange={(e) => setEditText(e.target.value)}
+                  />
+                ) : (
+                  <p className="text-sm mt-1">{comment.text}</p>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 };

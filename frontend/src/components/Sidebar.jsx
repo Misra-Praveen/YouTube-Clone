@@ -18,7 +18,7 @@ const Sidebar = ({isOpen}) => {
      const menuItemStyle = 'flex items-center gap-4 px-2 py-2 rounded-lg hover:bg-gray-200 cursor-pointer transition';
 
   return (
-    <aside className={`bg-white p-4 w-65 ${isOpen ? "block" : "hidden"}  fixed md:static h-full z-40`}>
+    <aside className={`bg-white p-4 ${isOpen ? "block" : "hidden"} hidden md:block fixed md:static h-full z-40`}>
         {/* Primary Navigation */}
       <div className='space-y-1 mb-4'>
         <Link to={"/"} className={menuItemStyle}>

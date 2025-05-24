@@ -55,9 +55,9 @@ const Home = () => {
   };
 
   return (
-    <div className="p-4 mt-16">
+    <div className="p-4 ">
       {/* Category Filter Buttons */}
-      <div className="flex gap-2 flex-wrap mb-6">
+      <div className="flex gap-2 overflow-x-auto mb-6 whitespace-nowrap hide-scrollbar">
         {categories.map((cat) => (
           <button
             key={cat}
@@ -77,7 +77,7 @@ const Home = () => {
       ) : filteredVideos.length === 0 ? (
         <p className="text-center text-lg text-red-500">No videos found.</p>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredVideos.map((video) => (
             <VideoCard key={video._id} video={video} />
           ))}
