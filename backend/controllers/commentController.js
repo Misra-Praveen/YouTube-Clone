@@ -5,8 +5,14 @@ export const addComment = async (req, res) => {
   try {
     const { videoId, text } = req.body;
 
+    if (!videoId || !text) {
+      return res.status(400).json({ message: "Video ID and comment text are required." });
+    }
+
     const video = await Video.findById(videoId);
-    if (!video) return res.status(404).json({ message: "Video not found" });
+    if (!video) {
+      return res.status(404).json({ message: "Video not found" });
+    }
 
     const comment = new Comment({
       videoId,
@@ -19,11 +25,25 @@ export const addComment = async (req, res) => {
     video.comments.push(savedComment._id);
     await video.save();
 
-    res.status(201).json({ message: "Comment added", comment: savedComment });
+    // ✅ Try to populate the comment author
+    const populatedComment = await Comment.findById(savedComment._id)
+      .populate("userId", "username avatar");
+
+    if (!populatedComment) {
+      return res.status(500).json({ message: "Comment saved, but population failed" });
+    }
+
+    return res.status(201).json({ message: "Comment added", comment: populatedComment });
   } catch (err) {
-    res.status(500).json({ message: "Failed to add comment", error: err.message });
+    console.error("❌ addComment error:", err.message);
+    return res.status(500).json({
+      message: "Failed to add comment",
+      error: err.message,
+    });
   }
 };
+
+
 
 export const getCommentsByVideo = async (req, res) => {
   try {
@@ -36,6 +56,26 @@ export const getCommentsByVideo = async (req, res) => {
     res.status(500).json({ message: "Failed to fetch comments", error: err.message });
   }
 };
+
+export const updateComment = async (req, res) => {
+  try {
+    const comment = await Comment.findById(req.params.id);
+    if (!comment) return res.status(404).json({ message: "Comment not found" });
+
+    if (comment.userId.toString() !== req.user._id.toString()) {
+      return res.status(403).json({ message: "Unauthorized" });
+    }
+
+    comment.text = req.body.text;
+    await comment.save();
+
+    const updated = await comment.populate("userId", "username avatar");
+    res.status(200).json({ comment: updated });
+  } catch (err) {
+    res.status(500).json({ message: "Failed to update comment", error: err.message });
+  }
+};
+
 
 export const deleteComment = async (req, res) => {
   try {
