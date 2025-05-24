@@ -13,11 +13,14 @@ const Home = lazy(() => import("./pages/Home.jsx"));
 const VideoPage = lazy(() => import("./pages/VideoPage.jsx"));
 const ChannelPage = lazy(() => import("./pages/ChannelPage.jsx"));
 const UploadVideo = lazy(() => import("./pages/UploadVideo.jsx"));
+const NotFound = lazy(() => import("./components/NotFound.jsx"));
+
 
 const appRouter = createBrowserRouter([
   {
     path: "/",
     element: <App />,
+    errorElement: <NotFound />,
     children: [
       {
         path: "/",
