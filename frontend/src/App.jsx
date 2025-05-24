@@ -30,7 +30,7 @@ const App = () => {
         {/* Main content */}
         <main className="flex-1 p-4 overflow-y-auto ml-0">
           {/* Pass searchTerm to Home page only */}
-          <Outlet context={{ searchTerm }} />
+          <Outlet context={{ searchTerm, setSearchTerm }} />
         </main>
       </div>
       <div className="mb-0 -mt-12">

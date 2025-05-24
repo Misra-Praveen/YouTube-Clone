@@ -4,7 +4,7 @@ import axios from "axios";
 import VideoCard from "../components/VideoCard";
 
 const Home = () => {
-  const { searchTerm } = useOutletContext();
+  const { searchTerm, setSearchTerm } = useOutletContext();
   const [category, setCategory] = useState("All");
   const [videos, setVideos] = useState([]);
   const [filteredVideos, setFilteredVideos] = useState([]);
@@ -54,6 +54,7 @@ const Home = () => {
 
   const handleCategoryClick = (cat) => {
     setCategory(cat);
+    setSearchTerm("")
   };
 
   return (

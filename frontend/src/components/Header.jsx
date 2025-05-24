@@ -33,6 +33,7 @@ const Header = ({ toggleSidebar, setSearchTerm }) => {
   const handleSearch = (e) => {
     e.preventDefault();
     setSearchTerm(input.trim());
+    setInput("");
   };
 
   // Close dropdown if clicked outside
