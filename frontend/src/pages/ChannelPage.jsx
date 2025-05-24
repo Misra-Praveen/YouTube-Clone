@@ -73,6 +73,7 @@ const ChannelPage = () => {
 
   if (loading) return <p className="text-center mt-10">Loading channel...</p>;
 
+  // if channel not found then create first
   if (!channel) {
     return (
       <div className="max-w-xl mx-auto mt-10 p-4 bg-white rounded shadow">

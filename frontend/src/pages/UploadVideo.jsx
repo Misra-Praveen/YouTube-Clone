@@ -17,6 +17,7 @@ const UploadVideo = () => {
 
   const navigate = useNavigate();
 
+  // fetch channel
   const fetchMyChannels = async () => {
     try {
       const res = await axios.get(
@@ -26,7 +27,7 @@ const UploadVideo = () => {
         }
       );
       if (res.data.length === 0) {
-        // ✅ Redirect if no channels
+        // Redirect if no channels
         alert("You need to create a channel before uploading a video.");
         navigate("/channel/me");
         return; 
@@ -41,6 +42,7 @@ const UploadVideo = () => {
     }
   };
 
+  // if user is not login then go to login first after then fetch channel
   useEffect(() => {
     //fetchMyChannels();
     if (userInfo?.token) {
@@ -54,12 +56,13 @@ const UploadVideo = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  // upload video
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { title, description, thumbnailUrl, videoUrl, channelId } = form;
+    const { title, description, thumbnailUrl, videoUrl, channelId, category } = form;
 
-    if (!title || !description || !thumbnailUrl || !videoUrl || !channelId) {
+    if (!title || !description || !thumbnailUrl || !videoUrl || !channelId || !category) {
       return alert("All fields are required.");
     }
 
@@ -102,7 +105,7 @@ const UploadVideo = () => {
         <input
           type="text"
           name="category"
-          placeholder="Category (optional)"
+          placeholder="Category"
           value={form.category}
           onChange={handleChange}
           className="w-full shadow shadow-gray-600 px-3 py-2 rounded focus: outline-none focus:ring-2 focus:ring-blue-200"

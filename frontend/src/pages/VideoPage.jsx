@@ -16,6 +16,7 @@ const VideoPage = () => {
   const [userDisliked, setUserDisliked] = useState(false);
   
   const[otherVideos, setOtherVideos] = useState([]);
+  // fetch videos for right side of video page
   const fetchOtherVideos = async () => {
     try {
       const res = await axios.get("http://localhost:5000/api/videos");
@@ -26,6 +27,7 @@ const VideoPage = () => {
     }
   };
 
+  // fetch video
   const fetchVideo = async () => {
     try {
       const res = await axios.get(`http://localhost:5000/api/videos/${id}`);
@@ -85,9 +87,10 @@ const VideoPage = () => {
     }
   };
 
+  // hanndel youtube video url
   const isYouTubeLink = (url) =>
     url?.includes("youtube.com/watch?v=") || url?.includes("youtu.be/");
-
+// embed youtube url
   const getYouTubeEmbedUrl = (url) => {
     const match = url.match(/(?:youtu\.be\/|v=)([a-zA-Z0-9_-]{11})/);
     return match ? `https://www.youtube.com/embed/${match[1]}` : null;
@@ -143,9 +146,10 @@ const VideoPage = () => {
             👎 {dislikesCount}
           </button>
         </div>
-
+        {/* Comment section */}
         <CommentSection videoId={video._id} />
       </div>
+      {/* Right side of video page  */}
       <div className="w-full lg:w-1/3">
         <h3 className="text-lg font-semibold mb-2">More Videos</h3>
         <div className="space-y-4">

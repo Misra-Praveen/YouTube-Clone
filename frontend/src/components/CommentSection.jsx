@@ -12,6 +12,7 @@ const CommentSection = ({ videoId }) => {
   const [editingId, setEditingId] = useState(null);
   const [editText, setEditText] = useState("");
 
+  // fetch comment by video id
   const fetchComments = async () => {
     try {
       const response = await axios.get(
@@ -23,12 +24,15 @@ const CommentSection = ({ videoId }) => {
     }
   };
 
+  // fetch comment every time when videoid change
   useEffect(() => {
     if (videoId) fetchComments();
   }, [videoId]);
 
+  // added new comment
   const handlePostComment = async () => {
-    if (!newComment.trim()) return;
+    if (!newComment.trim()) return alert("Comment cannot be empty");
+
     try {
       const config = {
         headers: {
@@ -46,10 +50,10 @@ const CommentSection = ({ videoId }) => {
       // console.log('response', response)
       // setComments((prev) => [response.data.comment, ...prev]);
       if (response.data?.comment) {
-    setComments((prev) => [response.data.comment, ...prev]);
-  } else {
-    console.warn("⚠️ Comment response missing, try refreshing.");
-  }
+        setComments((prev) => [response.data.comment, ...prev]);
+      } else {
+        console.warn("⚠️ Comment response missing, try refreshing.");
+      }
       setNewComment("");
     } catch (error) {
       console.error("Post comment failed:", error);
@@ -57,6 +61,7 @@ const CommentSection = ({ videoId }) => {
     }
   };
 
+  // delete comment
   const handleDelete = async (commentId) => {
     try {
       const config = {
@@ -74,13 +79,15 @@ const CommentSection = ({ videoId }) => {
     }
   };
 
+  // handdle edit 
   const handleEdit = (comment) => {
     setEditingId(comment._id);
     setEditText(comment.text);
   };
 
+  // handle edit comment save
   const handleEditSubmit = async (commentId) => {
-    if (!editText.trim()) return;
+    if (!editText.trim()) return alert("Comment cannot be empty");
     try {
       const config = {
         headers: {
@@ -94,9 +101,7 @@ const CommentSection = ({ videoId }) => {
       );
 
       setComments((prev) =>
-        prev.map((c) =>
-          c._id === commentId ? response.data.comment : c
-        )
+        prev.map((c) => (c._id === commentId ? response.data.comment : c))
       );
       setEditingId(null);
       setEditText("");

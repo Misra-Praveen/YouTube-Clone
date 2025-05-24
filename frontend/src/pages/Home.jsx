@@ -12,6 +12,7 @@ const Home = () => {
 
   const categories = ["All", "Education", "Gaming", "Music", "News", "Vlogs"];
 
+  // fetch all video
   const fetchVideos = async () => {
     setLoading(true);
     try {
@@ -28,6 +29,7 @@ const Home = () => {
     fetchVideos();
   }, []);
 
+  // fetch filter video by title, description, channelName and by category
   useEffect(() => {
     const term = searchTerm?.toLowerCase() || "";
     let filtered = [...videos];
