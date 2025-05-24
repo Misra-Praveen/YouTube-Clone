@@ -106,7 +106,7 @@ const VideoPage = () => {
         <div className="aspect-video bg-black mb-4">
           {isYouTubeLink(video.videoUrl) ? (
             <iframe
-              src={getYouTubeEmbedUrl(video.videoUrl)}
+              src={`${getYouTubeEmbedUrl(video.videoUrl)}?autoplay=1`} // auto play
               title={video.title}
               className="w-full h-full rounded"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
