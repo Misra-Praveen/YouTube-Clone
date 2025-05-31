@@ -16,7 +16,7 @@ const CommentSection = ({ videoId }) => {
   const fetchComments = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/comments/${videoId}`
+        `https://youtube-clone-backend.onrender.com/api/comments/${videoId}`
       );
       setComments(response.data);
     } catch (error) {
@@ -40,7 +40,7 @@ const CommentSection = ({ videoId }) => {
         },
       };
       const response = await axios.post(
-        `http://localhost:5000/api/comments`,
+        `https://youtube-clone-backend.onrender.com/api/comments`,
         {
           videoId,
           text: newComment,
@@ -70,7 +70,7 @@ const CommentSection = ({ videoId }) => {
         },
       };
       await axios.delete(
-        `http://localhost:5000/api/comments/${commentId}`,
+        `https://youtube-clone-backend.onrender.com/api/comments/${commentId}`,
         config
       );
       setComments((prev) => prev.filter((c) => c._id !== commentId));
@@ -95,7 +95,7 @@ const CommentSection = ({ videoId }) => {
         },
       };
       const response = await axios.put(
-        `http://localhost:5000/api/comments/${commentId}`,
+        `https://youtube-clone-backend.onrender.com/api/comments/${commentId}`,
         { text: editText },
         config
       );

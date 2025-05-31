@@ -16,7 +16,7 @@ const Home = () => {
   const fetchVideos = async () => {
     setLoading(true);
     try {
-      const res = await axios.get("http://localhost:5000/api/videos");
+      const res = await axios.get("https://youtube-clone-backend.onrender.com/api/videos");
       setVideos(res.data);
     } catch (err) {
       console.error("Failed to fetch videos", err);

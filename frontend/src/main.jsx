@@ -15,7 +15,6 @@ const ChannelPage = lazy(() => import("./pages/ChannelPage.jsx"));
 const UploadVideo = lazy(() => import("./pages/UploadVideo.jsx"));
 const NotFound = lazy(() => import("./components/NotFound.jsx"));
 
-
 const appRouter = createBrowserRouter([
   {
     path: "/",
@@ -75,9 +74,7 @@ const appRouter = createBrowserRouter([
 ]);
 
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
-    <Provider store={store}>
-      <RouterProvider router={appRouter} />
-    </Provider>
-  </StrictMode>
+  <Provider store={store}>
+    <RouterProvider router={appRouter} />
+  </Provider>
 );

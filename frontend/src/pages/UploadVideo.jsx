@@ -21,7 +21,7 @@ const UploadVideo = () => {
   const fetchMyChannels = async () => {
     try {
       const res = await axios.get(
-        "http://localhost:5000/api/channels/my-channels",
+        "https://youtube-clone-backend.onrender.com/api/channels/my-channels",
         {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         }
@@ -67,7 +67,7 @@ const UploadVideo = () => {
     }
 
     try {
-      const res = await axios.post("http://localhost:5000/api/videos", form, {
+      const res = await axios.post("https://youtube-clone-backend.onrender.com/api/videos", form, {
         headers: {
           Authorization: `Bearer ${userInfo.token}`,
         },
