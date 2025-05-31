@@ -19,7 +19,7 @@ const VideoPage = () => {
   // fetch videos for right side of video page
   const fetchOtherVideos = async () => {
     try {
-      const res = await axios.get("https://youtube-clone-0qg3.onrender.com/videos");
+      const res = await axios.get("https://youtube-clone-0qg3.onrender.com/api/videos");
       const filtered = res.data.filter((v) => v._id !== id);
       setOtherVideos(filtered);
     } catch (err) {
@@ -30,7 +30,7 @@ const VideoPage = () => {
   // fetch video
   const fetchVideo = async () => {
     try {
-      const res = await axios.get(`https://youtube-clone-0qg3.onrender.com/videos/${id}`);
+      const res = await axios.get(`https://youtube-clone-0qg3.onrender.com/api/videos/${id}`);
       setVideo(res.data);
 
       // Initialize local like/dislike state
