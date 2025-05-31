@@ -32,7 +32,7 @@ const ChannelPage = () => {
 
   const handleDeleteVideo = async (videoId) => {
     try {
-      await axios.delete(`https://youtube-clone-backend.onrender.com/api/videos/${videoId}`, {
+      await axios.delete(`https://youtube-clone-backend.onrender.com/videos/${videoId}`, {
         headers: {
           Authorization: `Bearer ${userInfo.token}`,
         },
@@ -47,7 +47,7 @@ const ChannelPage = () => {
     e.preventDefault();
     try {
       const res = await axios.post(
-        "https://youtube-clone-backend.onrender.com/api/channels",
+        "https://youtube-clone-backend.onrender.com/channels",
         { channelName, description, channelBanner },
         {
           headers: {

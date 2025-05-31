@@ -13,7 +13,7 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("https://youtube-clone-backend.onrender.com/api/auth/login", form);
+      const res = await axios.post("https://youtube-clone-backend.onrender.com/auth/login", form);
       const { token, user } = res.data;
 
       // Save to Redux and localStorage
