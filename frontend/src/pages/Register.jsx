@@ -29,7 +29,7 @@ function Register() {
   }
 
   try {
-    const res = await axios.post("https://youtube-clone-0qg3.onrender.com/auth/register", {
+    const res = await axios.post("https://youtube-clone-0qg3.onrender.com/api/auth/register", {
       username: form.username,
       email: form.email,
       password: form.password,
