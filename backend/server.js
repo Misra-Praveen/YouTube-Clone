@@ -10,7 +10,7 @@ import commentRoutes from "./routes/commentRoute.js";
 
 
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 10000;
 const MONGO_URI ="mongodb+srv://praveen:Reaction@cluster0.c35enxr.mongodb.net/youtube?retryWrites=true&w=majority&appName=Cluster0";
 mongoose.connect(MONGO_URI); //connect to mongodb database
 //all the code below is just to see if the connection is working or not
